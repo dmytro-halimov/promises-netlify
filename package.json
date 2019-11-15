@@ -1,15 +1,15 @@
 {
   "name": "shower",
-  "description": "Shower HTML presentation engine",
+  "description": "Slides for functions & objects lecture",
   "version": "2.7.0",
   "author": {
-    "name": "Vadim Makeev",
-    "url": "https://pepelsbey.net/"
+    "name": "DH",
+    "url": ""
   },
-  "homepage": "https://github.com/shower/shower",
+  "homepage": "https://github.com/DmytroHV/promises-lecture",
   "repository": {
     "type": "git",
-    "url": "git://github.com/shower/shower.git"
+    "url": "https://github.com/DmytroHV/promises-lecture"
   },
   "bugs": {
     "url": "https://github.com/shower/shower/issues"
@@ -29,6 +29,7 @@
   "dependencies": {
     "@shower/material": "^2.2.1",
     "@shower/ribbon": "^3.2.2",
+    "highlight.js": "^9.15.10",
     "shower-core": "^2.1.0"
   },
   "devDependencies": {

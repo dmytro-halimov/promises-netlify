@@ -1,205 +1,1636 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Shower Presentation Engine</title>
+    <title>Promises. ES Modules. Client-side Storage.</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="node_modules/@shower/ribbon/styles/styles.css">
+    <link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/a11y-light.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
     <style>
         .shower {
             --slide-ratio: calc(16 / 9);
+        }
+
+        .brand-title {
+            color: #fff;
         }
     </style>
 </head>
 <body class="shower list">
 
     <header class="caption">
-        <h1>Shower Presentation Engine</h1>
-        <p>Yours Truly, Famous Inc.</p>
+        <h1>Promises. ES Modules. Client-side Storage.</h1>
+        <p>JavaScript Basic Course. Acropolium, 2019</p>
     </header>
 
-    <section class="slide" id="cover">
-        <h2>Shower Presentation Engine</h2>
-        <p>Brought to you by <a href="http://pepelsbey.net">Vadim Makeev</a></p>
+    <section class="slide clear" id="cover">
+        <h2 class="shout">Promises. ES Modules. <br> Client-side Storage.</h2>
         <figure>
-            <img class="cover" src="pictures/cover.jpg" alt="Hands on the orange typewriter in a park">
-            <figcaption class="copyright right white">
-                <a href="http://fiftyfootshadows.net/">© John Carey</a>
-            </figcaption>
+            <img class="cover" src="pictures/books.jpg" alt="Laptop">
         </figure>
+        <figure style="position: absolute; top: 48px; left: 50%; transform: translateX(-50%);">
+            <img src="pictures/acropolium-logo.svg" alt="Acropolium logo" width="160" class="place top">
+        </figure>
+        <p class="place bottom">JavaScript Course, 2019</p>
         <style>
+            .cover {
+                width: 100%;
+                filter: grayscale(0) brightness(0.90) contrast(1.45);
+            }
+
             #cover h2 {
-                margin: 30px 0 0;
+                /* margin: 30px 0 0; */
                 color: white;
                 text-align: center;
                 font-size: 70px;
+                z-index: 100;
             }
 
-            #cover p {
+            #cover .subtitle {
+                position: relative;
                 margin: 10px 0 0;
                 text-align: center;
                 color: white;
                 font-style: italic;
                 font-size: 20px;
+                z-index: 100;
             }
 
-            #cover p a {
+            #cover .place.bottom {
+                color: #fff;
+                font-size: 16px;
+            }
+
+            #cover .subtitle a {
                 color: white;
+            }
+
+            #cover figure:after {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-color: #181C20;
+                /* background-color: #22A3FE; */
+                opacity: 0.75;
+            }
+
+            .brand-gray {
+                background-color: #101316;
+            }
+
+            .brand-yellow {
+                background-color: #F8DC3D;
+            }
+
+            h2.brand-title {
+                /* color: #22A3FE; */
+                color: #fff;
+            }
+
+            h2.brand-title span {
+                position: relative;
+            }
+
+            h2.brand-title span:before {
+                content: '';
+                position: absolute;
+                display: block;
+                width: 42px;
+                height: 42px;
+                top: 35px;
+                left: 101%;
+                background-image: url(./pictures/star.svg);
+                background-size: contain;
+                background-repeat: no-repeat;
+            }
+
+            ul.legend {
+                list-style: none;
+            }
+
+            ul.legend li:before {
+                display: none;
+            }
+
+            .slide pre mark {
+                margin: 0 1px;
+            }
+
+            .slide .red {
+                background: #f2dcdb;
+            }
+
+            .slide .yellow {
+                background: #FDEADA;
+            }
+
+            .slide .blue {
+                background: #dbeef3;
+            }
+
+            .slide .green {
+                background: #ebf1dd;
+            }
+
+            .square {
+                display: inline-block;
+                width: 20px;
+                height: 20px;
+                margin-right: .5em;
+            }
+            code.transparent {
+                background: #fff;
+            }
+            mark.place.top {
+                border-radius: 0;
+            }
+            .large {
+                font-size: 50px;
+                line-height: 1.5;
+            }
+            .fnsz20 {
+                font-size: 20px;
+            }
+            .mb0 {
+                margin-bottom: 0 !important;
+            }
+            .shout.fnsz20 {
+                font-size: 80px;
+            }
+            .note.long {
+                margin-top: 2rem;
+            }
+            .link {
+                line-height: 1.2;
+            }
+            .place.fullwidth-center {
+                width: 100%;
+                left: 0;
+                text-align: center;
+                transform: translateX(0) translateY(-50%);
+            }
+
+            .place.fullwidth {
+                width: 100%;
+                left: 0;
+                text-align: center;
+                transform: translateX(0);
+            }
+            .img-contain {
+                max-width: 100%;
+            }
+            .tag {
+                color: #696969;
             }
         </style>
     </section>
 
     <section class="slide">
-        <h2>Shower key features</h2>
-        <ol>
-            <li>Built on HTML, CSS and JavaScript</li>
-            <li>Works in all modern browsers</li>
-            <li>Themes are separated from engine</li>
-            <li>Fully keyboard accessible</li>
-            <li>Printable to PDF</li>
-        </ol>
-        <p class="note">Shower ['ʃəuə] noun. A person or thing that shows.</p>
+        <p class="large place"><mark style="font-weight: bold;">ES6</mark> by default</p>
+    </section>
+
+    <section class="slide" style="background: #181c20;">
+        <h2 class="shout brand-title"><span>Promises</span></h2>
     </section>
 
     <section class="slide">
-        <h2>Plain text on your slides</h2>
-        <p>Lorem ipsum dolor sit amet, consectetur <a href="#4">adipisicing</a> elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, <em>quis nostrud</em> exercitation ullamco laboris <strong>nisi ut aliquip</strong> ex ea commodo consequat. Duis aute irure <i>dolor</i> in reprehenderit in voluptate velit esse cillum <b>dolore</b> eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in <code>&lt;culpa&gt;</code> qui officia deserunt mollit anim id est laborum.</p>
+        <p class="place" style="font-size: 38px;">How did we come to <strong>Promises</strong>?</p>
+        <p class="place bottom next"><em>Brief overview</em></p>
     </section>
 
     <section class="slide">
-        <h2>Two columns if you like</h2>
-        <div class="columns two">
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.</p>
-            <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia.</p>
-        </div>
+        <p class="place large">
+            A long time ago...
+        </p>
+        <p class="place bottom next"><em>not so long ago, actually</em></p>
     </section>
 
     <section class="slide">
-        <h2>All kind of lists</h2>
-        <ol>
-            <li>Simple lists are marked with bullets</li>
-            <li>Ordered lists begin with a number</li>
-            <li>You can even nest lists one inside another
-                <ul>
-                    <li>Or mix their types</li>
-                    <li>But do not go too far</li>
-                    <li>Otherwise audience will be bored</li>
-                </ul>
-            </li>
-            <li>Look, seven rows exactly!</li>
-        </ol>
+        <p class="place large fullwidth-center" style="font-size: 40px;"><strong>Callbacks</strong> were the main async pattern</p>
     </section>
 
     <section class="slide">
-        <h2>Serious citations</h2>
-        <figure>
-            <blockquote>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia.</p>
-            </blockquote>
-            <figcaption>Marcus Tullius Cicero</figcaption>
-        </figure>
-    </section>
-
-    <section class="slide">
-        <h2>Code samples</h2>
-        <pre>
-            <code>&lt;!DOCTYPE html&gt;</code>
-            <code class="mark">&lt;html lang="en"&gt;</code>
-            <code><mark>&lt;head&gt;</mark> <span class="comment">&lt;!--Comment--&gt;</span></code>
-            <code>    &lt;title&gt;Shower&lt;/title&gt;</code>
-            <code>    &lt;meta charset="<mark class="important">UTF-8</mark>"&gt;</code>
-            <code>    &lt;link rel="stylesheet" href="screen.css"&gt;</code>
-            <code><mark>&lt;/head&gt;</mark></code>
+        <h2>Callbacks</h2>
+        <p class="next">A callback is a function that is passed as an argument to another function, to be <strong>"called back"</strong> later <em>(when some event will happen)</em>.</p>
+        <pre class="next javascript fnsz20">
+            <code>const saveButton = document.querySelector('.save-button');</code>
+            <br>
+            <code>saveButton.addEventListener('click', () => {</code>
+            <code>  console.log('Button is clicked!');</code>
+            <code>});</code>
         </pre>
     </section>
 
     <section class="slide">
-        <h2>Even tables</h2>
-        <table>
-        <tr>
-            <th scope="col">Locavore</th>
-            <th>Umami</th>
-            <th>Helvetica</th>
-            <th>Vegan</th>
-        </tr>
-        <tr>
-            <th scope="row">Fingerstache</th>
-            <td>Kale</td>
-            <td>Chips</td>
-            <td>Keytar</td>
-        </tr>
-        <tr>
-            <th scope="row">Sriracha</th>
-            <td>Gluten-free</td>
-            <td>Ennui</td>
-            <td>Keffiyeh</td>
-        </tr>
-        <tr>
-            <th scope="row">Thundercats</th>
-            <td>Jean</td>
-            <td>Shorts</td>
-            <td>Biodiesel</td>
-        </tr>
-        <tr>
-            <th scope="row">Terry</th>
-            <td>Richardson</td>
-            <td>Swag</td>
-            <td>Blog</td>
-        </tr>
-        </table>
-        <p>It’s good to have information organized.</p>
+        <p class="large place" style="font-size: 40px;">What's <strong>wrong</strong> with callbacks?</p>
     </section>
 
-    <section class="slide" id="picture">
-        <h2>Pictures</h2>
+    <section class="slide">
+        <h2>Callbacks: common problems</h2>
+        <ul>
+            <li class="next">Callback Hell (deep nesting)</li>
+            <li class="next">Error handling (you can't just <strong>throw</strong> an error)</li>
+            <li class="next">Issues of trust</li>
+            <li class="next">Maintainability</li>
+            <li class="next">Weak readability</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>Callback Hell</h2>
         <figure>
-            <img class="cover" src="pictures/picture.jpg" alt="Orange typewriter on a wooden table close-up">
-            <figcaption class="copyright right white">
-                <a href="http://fiftyfootshadows.net/">© John Carey</a>
-            </figcaption>
+            <img class="img-contain" src="./pictures/callback-hell-dark.jpeg" style="max-width: 70%;" alt="Callback hell">
         </figure>
+    </section>
+
+    <section class="slide">
+        <h2>Callbacks: issues of trust</h2>
+        <p>No guarantees that async function properly handles callback.</p>
+        <ul>
+            <li class="next">What if callback is never called?</li>
+            <li class="next">What if it's called more then once?</li>
+            <li class="next">What if it's called too early/too late?</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>Callbacks: developers convention</h2>
+        <p class="next">The primary source of these problems is the fact, that callback is just a <strong>convention</strong> for how we handle async operations.</p>
+        <p class="next">We don't control it with language constructions, all of it at the mercy of developers.</p>
+        <p class="next">So we need a standardized <strong>language primitive</strong> to work with async operations.</p>
+    </section>
+
+    <section class="slide">
+        <p class="large place">Here comes <strong>Promises</strong></p>
+    </section>
+
+    <section class="slide">
+        <div class="place">
+            <pre class="fnsz20 javascript">
+                <code>fetchUser('john.doe@gmail.com')</code>
+                <code>  .<mark>then</mark>({ id } => {</code>
+                <code>      loadThemeByUser(id);</code>
+                <code>      return fetchUserProducts(id);</code>
+                <code>  })</code>
+                <code>  .<mark>then</mark>(calculateTotalAmount)</code>
+                <code>  .<mark class="important">catch</mark>(handleError);</code>
+            </pre>
+        </div>
+    </section>
+
+    <section class="slide">
+        <h2>Asynchronous operation</h2>
+        <div class="columns two" style="margin-top: 100px;">
+            <div>
+                <figure>
+                    <img src="./pictures/async-operation.png" class="img-contain" alt="Async operation." style="max-width: 100%;">
+                </figure>
+            </div>
+            <div>
+                <p>The core of asynchronous programming is the relationship between the <strong>now</strong> and <strong>later</strong> parts of your program.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="slide">
+        <p class="large place" style="font-size: 28px;">I <strong>promise</strong> I will return to you when I finish.</p>
+    </section>
+
+    <section class="slide">
+        <h2>Real-life example</h2>
+        <p>Imagine you're looking for a job, your steps are:</p>
+        <div class="columns two">
+            <div>
+                <p style="color: green;">Success path:</p>
+                <ul>
+                    <li class="next">Send CV (resume)</li>
+                    <li class="next">Get an interview</li>
+                    <li class="next">Accept an offer</li>
+                </ul>
+            </div>
+            <div class="next">
+                <p style="color: #c00;">Failure:</p>
+                <ul>
+                    <li>Keep learning</li>
+                    <li class="next">Send CV to another company</li>
+                </ul>
+            </div>
+        </div>
+        <div class="next place bottom">All these operations are async</div>
+    </section>
+
+    <section class="slide">
+        <h2>Real-life example: promise states</h2>
+        <p>For example, after the interview you will receive a <strong>promise</strong>, that company will notify you about the results.</p>
+        <p class="next">States of that promise:</p>
+        <ul>
+            <li class="next"><strong>Pending</strong> - You don't know if you will be hired or refused <em>(you're just waiting)</em></li>
+            <li class="next"><strong>Success</strong> - You got a job offer <em>(as a result)</em></li>
+            <li class="next"><strong>Failure</strong> - You were refused <em>(and you want to know why)</em></li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>Real-life example: code</h2>
+        <p>Lets turn it into the code with promises:</p>
+        <pre class="fnsz20 javascript">
+            <code>// Getting the promise:</code>
+            <code>let promise = getInterview();</code>
+            <br>
+            <code>// Handle the promise: success and failure</code>
+            <code>promise.then(acceptOffer, sendCV);</code>
+        </pre>
+    </section>
+
+    <section class="slide">
+        <h2>Real-life example: code</h2>
+        <p>The whole process:</p>
+        <pre class="javascript">
+            <code>sendCV('Netflix')</code>
+            <code>  .<mark>then</mark>(getInterview)</code>
+            <code>  .<mark>then</mark>(acceptOffer)</code>
+            <code>  .<mark class="important">catch</mark>(keepLearning)</code>
+        </pre>
+    </section>
+
+    <section class="slide">
+        <p class="place">The <strong>Promise object</strong> represents the eventual completion (or failure) of an asynchronous operation, and its resulting value.</p>
+    </section>
+
+    <section class="slide">
+        <h2>Promises in general: brief summary</h2>
+        <p>What we know about promises so far:</p>
+        <ul style="font-size: 20px;">
+            <li class="next">Promise gives you a guarantee that something will be done <em>(no matter successfully or not).</em></li>
+            <li class="next">Promise can only succeed or fail. There is no other case.</li>
+            <li class="next">If promise will be successfull, you're expecting to get the result for further processing.</li>
+            <li class="next">If promise will be failed, you want to know why it happened.</li>
+            <li class="next">After the promise was given, you can only plan how you will handle both cases <em>(success and failure)</em>.</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>Creating Promises</h2>
+        <pre class="fnsz20 javascript">
+            <code>let promise = new Promise((resolve, reject) => {</code>
+            <code>  <span class="comment">// executor</span></code>
+            <code>  if (/* everything goes as expected */) {</code>
+            <code>    <mark>resolve</mark>('some value here');</code>
+            <code>  } else {</code>
+            <code>    <mark>reject</mark>('Error');</code>
+            <code>  }</code>
+            <code>});</code>
+        </pre>
+        <p class="next place bottom" style="font-size: 19px;">The function passed to <code>new Promise</code> is called the <strong>executor</strong>.</p>
+    </section>
+
+    <section class="slide">
+        <p class="large place" style="font-size: 26px;">When promise is created it runs <strong>automatically</strong></p>
+    </section>
+
+    <section class="slide">
+        <h2>Creating Promises</h2>
+        <p>An executor function receives two arguments: <strong>resolve</strong> and <strong>reject</strong> functions. These functions are callbacks and provided by JavaScript.</p>
+        <ul>
+            <li class="next"><code>resolve(value)</code> - if the operation is successfull, with resulting value</li>
+            <li class="next"><code>reject(error)</code> - if the operation is failed, with error provided <em>(the reason why)</em></li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>Creating Promises: promise object</h2>
+        <p><code>new Promise</code> returns a promise object with <strong>"pending"</strong> state set.</p>
+        <p class="next">States:</p>
+        <ul>
+            <li class="next"><strong>pending</strong> - initial state</li>
+            <li class="next"><strong>fulfilled</strong> - success operation <em>(with value)</em></li>
+            <li class="next"><strong>rejected</strong> - failed operation <em>(with reason)</em></li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>Creating Promises: promise object</h2>
+        <figure>
+            <img src="./pictures/promise-object.png" alt="Promise object." class="img-contain" style="max-width: 85%;">
+        </figure>
+    </section>
+
+    <section class="slide">
+        <h2>Creating Promises: immutability</h2>
+        <p>Once a promise resolves to a value, it will always remain at that value and <strong>never</strong> resolve again.</p>
+        <pre class="next fnsz20 javascript">
+            <code>let promise = new Promise((resolve, reject) => {</code>
+            <code>  resolve('first try');</code>
+            <code>  reject(Error('...')); <span class="next comment">// ignored</span></code>
+            <code>  setTimeout(() => { resolve('second try') }, 0); <span class="next comment">// ignored</span></code>
+            <code>});</code>
+        </pre>
+    </section>
+
+    <section class="slide">
+        <h2>Consuming promises</h2>
+        <p>Promise properties <code>state</code> and <code>result</code> are internal. We don't have access to them.</p>
+        <p class="next">So to consume a promise value, we can subscribe to one of these methods:</p>
+        <ul>
+            <li class="next"><strong>promise.then</strong></li>
+            <li class="next"><strong>promise.catch</strong></li>
+            <li class="next"><strong>promise.finally</strong></li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>Promises: then</h2>
+        <p><code>.then</code> accepts two callbacks: <strong>onFulfilled</strong> and <strong>onRejected</strong></p>
+        <pre class="next fnsz20 javascript" style="font-size: 19px;">
+            <code>let promise = new Promise((resolve, reject) => {</code>
+            <code>  setTimeout(() => { resolve('your value') }, 5000);</code>
+            <code>});</code>
+            <br>
+            <code>promise.<mark>then</mark>(</code>
+            <code>  value => console.log(value), <span class="comment next">// logs 'your value' after 5 seconds</span></code>
+            <code>  error => console.log(error) <span class="comment next">// doesn't executed</span></code>
+            <code>);</code>
+        </pre>
+    </section>
+
+    <section class="slide">
+        <h2>Promises: then</h2>
+        <p>We can skip <strong>onRejected</strong> function and provide only functin for successfull completion <em>(e.g. we're handling errors with .catch method)</em>.</p>
+        <pre class="fnsz20 javascript" style="font-size: 19px;">
+            <code>let promise = new Promise((resolve, reject) => {</code>
+            <code>  setTimeout(() => { resolve('your value') }, 5000);</code>
+            <code>});</code>
+            <br>
+            <code>promise.<mark>then</mark>(</code>
+            <code>  value => console.log(value) <span class="comment">// logs 'your value' after 5 seconds</span></code>
+            <code>);</code>
+        </pre>
+    </section>
+
+    <section class="slide">
+        <h2>Promises: catch</h2>
+        <p><strong>.catch(handleError)</strong> is the same as <strong>.then(null, handleError)</strong></p>
+        <pre class="fnsz20 javascript" style="font-size: 19px;">
+            <code>let promise = new Promise((resolve, reject) => {</code>
+            <code>  setTimeout(() => { reject(Error('Sorry dude')) }, 5000);</code>
+            <code>});</code>
+            <br>
+            <code>promise.<mark>catch</mark>(error => {</code>
+            <code>  console.log(error); <span class="comment next">// logs "Error: Sorry dude" after 5 seconds</span></code>
+            <code>});</code>
+        </pre>
+    </section>
+
+    <section class="slide">
+        <h2>Promises: finally</h2>
+        <p style="font-size: 20px;"><strong>.finally(handler)</strong> always executes when the promise is <strong>settled</strong>: either resolved or rejected</p>
+        <pre class="next fnsz20 javascript" style="font-size: 19px;">
+            <code>let isLoading = true; <span class="comment">// set to true before request</span></code>
+            <code>let promise = new Promise((resolve, reject) => {</code>
+            <code>  setTimeout(() => { resolve(true) }, 5000);</code>
+            <code>});</code>
+            <br>
+            <code>promise.<mark>finally</mark>(() => {</code>
+            <code>  isLoading = false; <span class="comment">// set to false when request is finished</span></code>
+            <code>});</code>
+        </pre>
+    </section>
+
+    <section class="slide">
+        <h2>Promises: lazy consuming</h2>
+        <p>You can subscribe for promise even if it's already settled.</p>
+        <pre class="fnsz20 javascript">
+            <code>let promise = new Promise(resolve => resolve('done'));</code>
+            <code><span class="comment">// lines of code ...</span></code>
+            <code><span class="comment">// the promise already resolved</span></code>
+            <code>promise.then(console.log); <span class="comment">// done</span></code>
+        </pre>
+        <p class="next">All handlers are still asynchronous</p>
+        <p class="next">You can think of it like <code>setTimeout(handler, 0)</code> <em>(consistency)</em></p>
+    </section>
+
+    <section class="slide">
+        <h2>Chaining with callbacks</h2>
+        <div class="fireball-container">
+            <pre class="fnsz20 javascript without-nums" style="font-size: 17px;">
+                <code>func1(value1 => {</code>
+                <code>  func2(value2 => {</code>
+                <code>    func3(value3 => {</code>
+                <code>      func4(value4 => {</code>
+                <code>        func5(value5 => {</code>
+                <code>          <span class="comment">// ...</span></code>
+                <code>        });</code>
+                <code>      });</code>
+                <code>    });</code>
+                <code>  });</code>
+                <code>});</code>
+            </pre>
+            <img src="./pictures/fireball.jpg" alt="Fireball.">
+        </div>
         <style>
-            #picture h2 {
-                color: white;
+            .without-nums code:before {
+                display: none;
+            }
+
+            .fireball-container {
+                position: relative;
+                display: flex;
+                justify-content: center;
+            }
+
+            .fireball-container img {
+                position: absolute;
+                transform: translateY(50%) translateX(-20%);
+                left: 0;
             }
         </style>
     </section>
 
     <section class="slide">
-        <h2 class="shout shrink">You can even shout this way</h2>
+        <h2>Chaining with promises</h2>
+        <pre class="javascript">
+            <code>func1()</code>
+            <code>  .then(func2)</code>
+            <code>  .then(func3)</code>
+            <code>  .then(func4)</code>
+            <code>  .then(func5);</code>
+        </pre>
     </section>
 
     <section class="slide">
-        <h2>Inner navigation</h2>
+        <h2>Promises: chaining</h2>
+        <p>We can <strong>chain</strong> promises to specify asynchronous workflow.</p>
+        <p class="next">Thanks to fact that <code>.then()</code> returns a new promise.</p>
+        <p class="next">The core idea is that the result is passed through the chain of <code>.then</code> handlers.</p>
+        <pre class="fnsz20 javascript">
+
+        </pre>
+    </section>
+
+    <section class="slide">
+        <h2>Promises: chaining example</h2>
+        <pre class="fnsz20 javascript chaining-container" style="font-size: 16px;">
+            <code>let promise = new Promise(resolve => setTimeout(resolve, 1000, '*'));</code>
+            <br>
+            <code>promise</code>
+            <code>  .then(value => {</code>
+            <code>    console.log(value); <span class="next comment">// *</span></code>
+            <code>    <mark>return</mark> value + '*';</code>
+            <code>  })</code>
+            <code>  .then(value => {</code>
+            <code>    console.log(value); <span class="next comment">// **</span></code>
+            <code>    <mark>return</mark> value + '*';</code>
+            <code>  })</code>
+            <code>  ...</code>
+            <img class="next" src="./pictures/chaining.png" alt="Promise chaining.">
+        </pre>
+        <style>
+            .chaining-container {
+                position: relative;
+            }
+
+            .chaining-container img {
+                position: absolute;
+                top: 60px;
+                right: 200px;
+                max-width: 140px;
+                height: auto;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>Returning promises</h2>
+        <pre class="fnsz20 javascript returning-container" style="font-size: 16px;">
+            <code>const delay = time => new Promise(resolve => setTimeout(resolve, time));</code>
+            <br>
+            <code>delay(1000)</code>
+            <code>  .then(() => {</code>
+            <code>    console.log('step 1 (after 1000ms)');</code>
+            <code>    <mark>return</mark> delay(3000);</code>
+            <code>  })</code>
+            <code>  .then(() => {</code>
+            <code>    console.log('step 2 (after 3000ms)');</code>
+            <code>    <mark>return</mark> delay(4000);</code>
+            <code>  });</code>
+            <img class="next" src="./pictures/returning-promises.png" alt="Returning promises.">
+        </pre>
+        <style>
+            .returning-container {
+                position: relative;
+            }
+
+            .returning-container img {
+                position: absolute;
+                top: 60px;
+                right: 170px;
+                max-width: 160px;
+                height: auto;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>Promise API</h2>
+        <p>Promise static methods:</p>
+        <ul>
+            <li class="next"><strong>Promise.all</strong> - waits for all promises to be settled and returns a new promise with their results.</li>
+            <li class="next"><strong>Promise.race</strong> - waits for the first promise to be settled and returns a new promise with its result.</li>
+            <li class="next"><strong>Promise.resolve</strong> - creates a resolved promise with provided value.</li>
+            <li class="next"><strong>Promise.reject</strong> - create a rejected promise with the provided error.</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>Promise.all</h2>
+        <p style="font-size: 22px;"><strong>Promise.all()</strong> takes an array of promises and returns a new promise:</p>
+        <ul style="font-size: 22px;">
+            <li class="next">If <strong>all</strong> of the promises <strong>resolve</strong>, then the new promise also resolves.</li>
+            <li class="next">If <strong>one</strong> of the promises <strong>rejects</strong>, then the new promise also rejects.</li>
+        </ul>
+        <pre class="next fnsz20 javascript" style="font-size: 16px;">
+            <code>Promise.<mark>all</mark>([</code>
+            <code>  new Promise(res => setTimeout(() => res('value1'), 1000)),</code>
+            <code>  new Promise(res => setTimeout(() => res('value2'), 2000)),</code>
+            <code>  new Promise(res => setTimeout(() => res('value3'), 3000)),</code>
+            <code>])</code>
+            <code>.then(values => { console.log(values) }); <span class="next comment">// after 3s: ['value1, 'value2', 'value3']</span></code>
+        </pre>
+    </section>
+
+    <section class="slide">
+        <h2>Promise.all: use case</h2>
+        <pre class="fnsz20 javascript">
+            <code>const logoUrls = ['logo1.svg', 'logo2,svg', 'logo3.svg'];</code>
+            <code>const requests = logoUrls.map(fetchLogo);</code>
+            <br>
+            <code>Promise.all(requests)</code>
+            <code>  .then(logos => { console.log(logos); })</code>
+            <code>  .catch(error => { console.error(error); });</code>
+        </pre>
+    </section>
+
+    <section class="slide">
+        <h2>Promise.race</h2>
+        <p style="font-size: 22px;"><strong>Promise.race()</strong> takes an array of promises and returns a new promise:</p>
+        <ul style="font-size: 22px;">
+            <li class="next">Value from the <strong>first</strong> promise to resolve passed to the new promise.</li>
+            <li class="next">The first promise to reject causes the new promise to reject with its error.</li>
+        </ul>
+        <pre class="next fnsz20 javascript" style="font-size: 16px;">
+            <code>Promise.<mark>race</mark>([</code>
+            <code>  new Promise(res => setTimeout(() => res('value1'), 3000)),</code>
+            <code>  new Promise(res => setTimeout(() => res('value2'), 1000)),</code>
+            <code>  new Promise(res => setTimeout(() => res('value3'), 2000)),</code>
+            <code>])</code>
+            <code>.then(value => { console.log(value) }); <span class="next comment">// after 1s: value2</span></code>
+        </pre>
+    </section>
+
+    <section class="slide">
+        <h2>Promise.race: use case</h2>
+        <p>Imagine taht we need to set timeout for certian request:</p>
+        <pre class="fnsz20 javascript">
+            <code>Promise.race([</code>
+            <code>  new Promise((resolve, reject) => {</code>
+            <code>    setTimeout(reject, 15000); <span class="comment">// Will be rejected after 15s</span></code>
+            <code>  }),</code>
+            <code>  fetchFonts()</code>
+            <code>]);</code>
+        </pre>
+    </section>
+
+    <section class="slide">
+        <h2>Promise.resolve</h2>
+        <p><strong>Promise.resolve()</strong> creates a fulfilled promise with passed value.</p>
+        <pre class="fnsz20 javascript">
+            <code>const promise = Promise.<mark>resolve</mark>('some value');</code>
+            <code>promise.then(value => console.log); <span class="comment">// some value</span></code>
+        </pre>
+        <p class="next">If we pass a promise, it will be returned as it is.</p>
+        <pre class="next fnsz20 javascript">
+            <code>const promise1 = Promise.<mark>resolve</mark>('value1');</code>
+            <code>const promise2 = Promise.<mark>resolve</mark>(promise1);</code>
+            <code>console.log(promise1 === promise2); <span class="comment">// <mark>true</mark></span></code>
+        </pre>
+    </section>
+
+    <section class="slide">
+        <h2>Promise.reject</h2>
+        <p><strong>Promise.reject()</strong> takes a value and creates a rejected promise with that value.</p>
+        <pre class="fnsz20 javascript">
+            <code>const promise = Promise.<mark>reject</mark>(Error('Wrong!'));</code>
+            <code>promise.catch(error => console.log); <span class="comment">// Error: Wrong!</span></code>
+        </pre>
+    </section>
+
+    <section class="slide">
+        <h2>What's the difference?</h2>
+        <pre class="fnsz20 javascript" style="font-size: 16px;">
+            <code>doSomething().then(() => {</code>
+            <code>  return doSomethingElse();</code>
+            <code>});</code>
+            <br>
+            <code>doSomething().then(() => {</code>
+            <code>  doSomethingElse();</code>
+            <code>});</code>
+            <br>
+            <code>doSomething().then(doSomethingElse());</code>
+            <br>
+            <code>doSomething().then(doSomethingElse);</code>
+        </pre>
+    </section>
+
+    <section class="slide" style="background: #181C20;">
+        <h2 class="shout brand-title brand-title--sm" style="font-size: 100px;"><span>Client-side Storage</span></h2>
+        <style>
+            h2.brand-title--sm span:before {
+                top: 25px;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>Promise.resolve</h2>
+        <p></p>
+    </section>
+
+    <section class="slide">
+        <p class="large place">When would you use <strong>client</strong> data storage?</p>
+    </section>
+
+    <section class="slide">
+        <h2>Case studies</h2>
+        <ul>
+            <li class="next">Personalizing user site preferences <em>(themes, widgets, etc.)</em></li>
+            <li class="next">Persisting user previous activity <em>(shopping cart, complex form state, etc.)</em></li>
+            <li class="next">Better User Experience</li>
+            <li class="next">Synchronizing data across tabs</li>
+            <li class="next">Saving assets locally for better performance</li>
+            <li class="next">Enabling offline support</li>
+            <li class="next">Browser extensions</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>Client-side Storage: overview</h2>
+        <p class="next">Main mechanisms for storing data on the client.</p>
+        <ul style="position: relative;">
+            <li class="next line-through">Cookies</li>
+            <li class="next">Web Storage API</li>
+            <li class="next">IndexedDB <em style="color: #999;">(advanced topic)</em></li>
+            <li class="next">Cache Storage <em style="color: #999;">(advanced topic)</em></li>
+            <div class="next place spotlight"></div>
+            <span class="next line"></span>
+        </ul>
+        <style>
+            .spotlight {
+                box-shadow: 0 0 0 1000px rgba(0, 0, 0, 0.45);
+                width: 240px;
+                height: 110px;
+                border-radius: .5rem;
+                top: 50px;
+                left: 78px;
+            }
+
+            .line-through {
+                position: relative;
+                width: fit-content;
+            }
+
+            .line {
+                position: absolute;
+                top: 27px;
+                left: -8px;
+                transform: translateY(-50%);
+                background: #c00;
+                width: 100px;
+                height: 4px;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>Cookies disadvantages (client-only storage)</h2>
+        <ul>
+            <li class="next">Storage size too small <span class="next" style="color: #c00;">(4kb)</span></li>
+            <li class="next">They add to the page load of the document</li>
+            <li class="next">Data is added to <strong>every</strong> HTTP request header (extra overhead)</li>
+            <li class="next">Can be deleted or blocked</li>
+            <li class="next">You should manually parse key/value pairs.</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <p class="place">Cookies are mainly for reading <strong>server-side</strong>, whereas web storage can only be read by the <strong>client-side</strong>.</p>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout" style="font-size: 110px;">Web Storage API</h2>
+    </section>
+
+    <section class="slide">
+        <h2>Web Storage API</h2>
+        <p>It arose as a solution to the issues with Cookies, by offering a more intuitive and secure API for storing simple data within the browser.</p>
+        <p class="next">While cookies typically deal with server/client communication, the Web Storage API is best used for <strong>client-only</strong> data.</p>
+    </section>
+
+    <section class="slide">
+        <h2>Web Storage: features</h2>
+        <ul>
+            <li class="next">Bigger storage size <span class="next" style="color: green;">(5-10MB)</span></li>
+            <li class="next">Data not sent with every HTTP request</li>
+            <li class="next">Enables running the same app in multiple windows</li>
+            <li class="next">Persists data across tabs, windows, sessions</li>
+            <li class="next">Event model for keeping other tabs and windows synchronized</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <p class="large place" style="font-size: 60px;"><strong>Supported</strong> in all modern browsers</p>
+    </section>
+
+    <section class="slide">
+        <h2>Web Storage API: storages</h2>
+        <p class="note">Provides mechanisms for storing key-value pairs of data within the browser.</p>
+        <p class="next">Web Storage comes in two flavors:</p>
         <ol>
-            <li>Lets you reveal list items one by one</li>
-            <li class="next">To keep some key points</li>
-            <li class="next">In secret from audience</li>
-            <li class="next">But it will work only once</li>
-            <li class="next">Nobody wants to see the same joke twice</li>
+            <li class="next"><code>localStorage</code></li>
+            <li class="next"><code>sessionStorage</code></li>
         </ol>
     </section>
 
-    <section class="slide" id="see-more">
-        <h2 class="shout">
-            <img src="pictures/logo.svg" alt="Shower logo">
-            <a href="https://github.com/shower/shower">See more on GitHub</a>
-        </h2>
+    <section class="slide">
+        <h2>Local storage</h2>
+        <p>Accessible via <strong>Window</strong> object:</p>
+        <p><code>window.localStorage</code> or just <code>localStorage</code></p>
+        <p class="next">Can use up to <strong>10MB</strong> of storage <span class="next note"><em>(actually the sum of both)</em></span></p>
+        <p class="next">Stores data with no expiration date <span class="next note"><em>(should be deleted manually)</em></span></p>
+    </section>
+
+    <section class="slide">
+        <h2>Storage methods and properties</h2>
+        <p class="note">localStorage and sessionStorage are both instances of the Storage object.</p>
+        <ul>
+            <li class="next"><code>setItem(key, value)</code> - store key/value pair</li>
+            <li class="next"><code>getItem(key)</code> - get the value by key</li>
+            <li class="next"><code>removeItem(key)</code> - remove the key with its value</li>
+            <li class="next"><code>key(idx)</code> - get the key on a given position</li>
+            <li class="next"><code>clear()</code> - delete all keys</li>
+            <li class="next"><code>length</code> - the number of stored items</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>Local storage: simple example</h2>
+        <pre class="fnsz20 javascript">
+            <code>const userTheme = 'brand-dark-ui';</code>
+            <br>
+            <code><span class="comment">// Write data to storage</span></code>
+            <code>localStorage.<mark>setItem</mark>('theme', userTheme);</code>
+            <br>
+            <code><span class="comment">// Read data from storage</span></code>
+            <code>localStorage.<mark>getItem</mark>('theme'); <span class="comment">// 'brand-dark-ui'</span> </code>
+        </pre>
+    </section>
+
+    <section class="slide">
+        <h2>Chrome devtools: Application tab</h2>
+        <figure>
+            <img src="./pictures/local-storage.png" alt="Chrome devtools" class=" img-contain" style="max-width: 90%;">
+        </figure>
+    </section>
+
+    <section class="slide">
+        <h2>Storage interaction</h2>
+        <p class="note" style="font-size: 20px;">You can also treat the <code>localStorage</code> interface like a JavaScript object.</p>
+        <pre class="fnsz20 javascript">
+            <code><span class="comment">// Save data to storage</span></code>
+            <code>localStorage.user = 'John Doe';</code>
+            <br>
+            <code><span class="comment">// Retrieve data</span></code>
+            <code>console.log(localStorage.user); <span class="comment">// 'John Doe'</span></code>
+            <br>
+            <code><span class="comment">// Delete value</span></code>
+            <code>delete localStorage.user;</code>
+        </pre>
+    </section>
+
+    <section class="slide">
+        <div class="place" style="font-size: 30px;">
+            <p>Recommended way to interact with Storage is to use <strong>built-in</strong> methods.</p>
+            <p class="next">Built-in methods fire <strong>'storage'</strong> event.</p>
+        </div>
+    </section>
+
+    <section class="slide">
+        <h2>Local storage: complex data</h2>
+        <pre class="fnsz20 javascript">
+            <code>const user = {</code>
+            <code>  email: 'john.doe@gmail.com',</code>
+            <code>  role: 'partner'</code>
+            <code>};</code>
+            <code class="next">localStorage.setItem('user', user);</code>
+            <code class="next">localStorage.getItem('user'); <span class="next comment">// <mark>"[object Object]"</mark></span></code>
+        </pre>
+    </section>
+
+    <section class="slide">
+        <p class="large place fullwidth-center">Only <strong>Strings</strong> are acceptable</p>
+    </section>
+
+    <section class="slide">
+        <h2>JSON is the way</h2>
+        <pre class="fnsz20 javascript">
+            <code>const user = { email: 'john.doe@gmail.com', role: 'partner' };</code>
+            <br>
+            <code><span class="comment">// Convert data to JSON before saving to storage</span></code>
+            <code>localStorage.setItem('user', JSON.<mark>stringify</mark>(user));</code>
+            <br>
+            <code><span class="comment">// Parse stored value</span></code>
+            <code>const cachedUser = JSON.<mark>parse</mark>(localStorage.getItem('user'));</code>
+        </pre>
+    </section>
+
+    <section class="slide">
+        <h2>Session storage</h2>
+        <p>Similar to <code>localStorage</code>, but has one key difference:</p>
+        <p class="next" style="text-align: center;">The data is only stored for the <strong>browser tab session</strong>.</p>
+        <p class="next">Data will be lost if you:</p>
+        <ul>
+            <li class="next">Close the browser or tab</li>
+            <li class="next">Open the same page in a new tab</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>Session storage: simple example</h2>
+        <pre class="fnsz20 javascript">
+            <code>const searchTerm = 'tame impala';</code>
+            <br>
+            <code><span class="comment">// Write data to storage</span></code>
+            <code>sessionStorage.<mark>setItem</mark>('cachedSearchInput', searchTerm);</code>
+            <br>
+            <code><span class="comment">// Read data from storage</span></code>
+            <code>sessionStorage.<mark>getItem</mark>('cachedSearchInput'); <span class="comment">// 'tame impala'</span> </code>
+        </pre>
+    </section>
+
+    <section class="slide">
+        <h2>Sandboxing</h2>
+        <p>The data that you add to the Web Storage is <strong>sandboxed</strong> to your websites domain name.</p>
+        <p class="next">Sub-domains (i.e. <em>a.example.com, b.example.com</em>) are treated as <strong>separate</strong> domains and are therefore given their own datastore.</p>
+        <p class="next">Port and protocol (<em>http, https</em>) should also be the same, so <em>example.com:8080</em> can't access storage data from <em>example.com:8081</em></p>
+    </section>
+
+    <section class="slide">
+        <h2>Storage event</h2>
+        <p>Fires when the data gets updated in <code>localStorage</code> or <code>sessionStorage</code>.</p>
+        <p class="next">The event fires on all window objects where the storage is accessible, except the one that caused it.</p>
+        <p class="next">Storage event allows communication between different tabs/windows from the same origin.</p>
+    </section>
+
+    <section class="slide">
+        <h2>Storage event: properties</h2>
+        <ul>
+            <li><code>key</code> - changed key (<code>null</code> if <code>.clear()</code> was called)</li>
+            <li class="next"><code>oldValue</code> - the old value (<code>null</code> if the key was newly added.)</li>
+            <li class="next"><code>newValue</code> - the new value (<code>null</code> if the key is removed)</li>
+            <li class="next"><code>url</code> - the url of the document where the update happened</li>
+            <li class="next"><code>storageArea</code> - Storage object where the update happened</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>Storage event: example</h2>
+        <pre class="javascript">
+            <code>import { setNewTheme } from './services/ui';</code>
+            <br>
+            <code>window.addEventListener('storage', event => {</code>
+            <code>  if (event.key !== 'userTheme') return;</code>
+            <code>  setNewTheme(event.newValue);</code>
+            <code>});</code>
+        </pre>
+    </section>
+
+    <section class="slide">
+        <h2>Comparison table</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Cookies</th>
+                    <th>Local storage</th>
+                    <th>Session storage</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td scope="row"><strong>Capacity</strong></td>
+                    <td>4kb</td>
+                    <td>10mb</td>
+                    <td>5mb</td>
+                </tr>
+                <tr>
+                    <td scope="row"><strong>Browsers</strong></td>
+                    <td>HTML4/HTML5</td>
+                    <td>HTML5</td>
+                    <td>HTML5</td>
+                </tr>
+                <tr>
+                    <td scope="row"><strong>Accessible from</strong></td>
+                    <td>Any window</td>
+                    <td>Any window</td>
+                    <td>Same tab</td>
+                </tr>
+                <tr>
+                    <td scope="row"><strong>Expires</strong></td>
+                    <td>Manually set</td>
+                    <td>Never</td>
+                    <td>On tab close</td>
+                </tr>
+                <tr>
+                    <td scope="row"><strong>Storage location</strong></td>
+                    <td>Browser and server</td>
+                    <td>Browser only</td>
+                    <td>Browser only</td>
+                </tr>
+                <tr>
+                    <td scope="row"><strong>Sent with requests</strong></td>
+                    <td>Yes</td>
+                    <td>No</td>
+                    <td>No</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section class="slide">
+        <h2>Summary</h2>
+        <ul>
+            <li><strong>Web Storage</strong> is the best choice for storing simple key/value pairs</li>
+            <li class="next">Both key and value must be <strong>strings</strong></li>
+            <li class="next">Storage comes in to flavors: <code>localStorage</code> and <code>sessionStorage</code></li>
+            <li class="next">The limit is <strong>5mb+</strong>, depends on browser</li>
+            <li class="next">The data is bound to the <strong>origin</strong> (domain/port/protocol)</li>
+            <li class="next">Storage event allows us to <strong>communicate</strong> between tabs/windows</li>
+        </ul>
+    </section>
+
+    <section class="slide" style="background: #181C20;">
+        <h2 class="shout brand-title brand-title--sm" style="font-size: 140px;"><span>ES Modules</span></h2>
+    </section>
+
+    <section class="slide">
+        <p class="large place fullwidth-center">Why we need modularity?</p>
+    </section>
+
+    <section class="slide">
+        <h2>Modules: the benefits</h2>
+        <ul style="font-size: 24px;">
+            <li>Better code readability/maintainability</li>
+            <li class="next">Separation of concerns <em>(self-contained functionality)</em></li>
+            <li class="next">Avoiding global scopes</li>
+            <li class="next">Modules/code reusability</li>
+            <li class="next">Dependency management</li>
+            <li class="next">Dynamic imports</li>
+            <li class="next">Deferred by default</li>
+            <li class="next">Better architecture</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <div class="place" style="font-size: 30px; line-height: 1.6;">
+            <p>
+                Simply put, modules give us a better way to <strong>organize</strong> code.
+            </p>
+            <p class="next">
+                With modules, we group the variables and functions that make sense to go together.
+            </p>
+        </div>
+    </section>
+
+    <section class="slide">
+        <h2>The time before modules</h2>
+        <div class="columns two">
+            <div>
+                <p>Multiple HTML script tags:</p>
+                <pre class="fnsz18">
+
+                    <code class="markup language-markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>lib1.js<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span><span class="token script"></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">&gt;</span></code>
+
+                    <code class="markup language-markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>lib2.js<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span><span class="token script"></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">&gt;</span></code>
+
+                    <code class="markup language-markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>component1.js<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span><span class="token script"></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">&gt;</span></span></code>
+
+                    <code class="markup language-markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>index.js<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span><span class="token script"></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">&gt;</span></span></code>
+
+                </pre>
+            </div>
+            <div>
+                <p class="next">Problems:</p>
+                <ul style="font-size: 24px;">
+                    <li class="next">HTTP request for each script</li>
+                    <li class="next">Manual dependency management</li>
+                    <li class="next">Global scope</li>
+                    <li class="next">Easy variable override</li>
+                </ul>
+            </div>
+        </div>
         <style>
-            #see-more h2 {
-                font-size: 100px
+            .fnsz18 {
+                font-size: 18px;
             }
 
-            #see-more img {
-                width: 0.72em;
-                height: 0.72em;
+            .token.tag {
+                color: #905;
+            }
+
+            .token.punctuation {
+                color: #999;
+            }
+
+            .token.attr-name {
+                color: #690;
+            }
+
+            .token.attr-value {
+                color: #07a;
             }
         </style>
     </section>
 
-    <footer class="badge">
-        <a href="https://github.com/shower/shower">Fork me on GitHub</a>
-    </footer>
+    <section class="slide">
+        <h2>The time before modules: module definitions</h2>
+        <ul>
+            <li>CommonJS</li>
+            <li>AMD <em>(Asynchronus Module Definition)</em></li>
+            <li>UMD <em>(Universal Module Definition)</em></li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>ECMAScript Modules</h2>
+        <ul>
+            <li>Was introduced with ES6 specification</li>
+            <li class="next">Finally, Standardized module system for JavaScript</li>
+            <li class="next">Supported in all major browsers</li>
+            <li class="next">Most commonly used with module bundlers <em>(Webpack, Parcel, Rollup)</em></li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>ESM: implementation timeline</h2>
+        <ol>
+            <li><strong>June 2015</strong> - ES6 standard</li>
+            <li class="next"><strong>autumn 2016</strong> - HTML spec, which describes how to include, find and download modules</li>
+            <li class="next"><strong>March 2017</strong> - First ES modules support in Safari</li>
+            <li class="next"><strong>2017-2018</strong> - Have landed in MS Edge, Chrome and Node.js</li>
+            <li class="next"><strong>May 2018</strong> - Support landed in Firefox</li>
+        </ol>
+    </section>
+
+    <section class="slide">
+        <h2>ES Modules: current support</h2>
+        <a href="https://caniuse.com/#feat=es6-module" target="_blank">caniuse.com</a>
+        <figure style="margin-top: 5px;">
+            <img class="img-contain" src="./pictures/support.png" alt="ES Modules support" style="max-width: 90%;">
+        </figure>
+    </section>
+
+    <section class="slide">
+        <h2>ES Modules: the basics</h2>
+        <p>A module is just a file. Any <code>.js</code> file can be treated like a module.</p>
+        <p class="next">To use modules in a browser you should set type attribute to <strong>"module"</strong>:</p>
+        <pre class="next">
+            <code class="markup language-markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>index.js<span class="token punctuation">"</span></span><span class="token attr-name"> type</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>module<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span><span class="token script"></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">&gt;</span></code>
+        </pre>
+        <p class="next"><code>type="module"</code> is a flag for the browser that included script should be executed as a module</p>
+    </section>
+
+    <section class="slide">
+        <h2>ES Modules: deferred </h2>
+        <p>Module scripts are <strong>deferred</strong> by default, it means:</p>
+        <ul>
+            <li class="next">Module scripts load in parallel and doesn't block HTML</li>
+            <li class="next">Module scripts wait until the HTML document is ready</li>
+            <li class="next">Module scripts execute in established order</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>ES Modules: strict mode</h2>
+        <p>Modules always use <strong>strict mode</strong> by default. Keep that in mind.</p>
+        <pre class="javascript">
+            <code><span class="comment">// index.js</span></code>
+            <code><span class="comment">// Don't need to set "use strict" manually</span></code>
+            <code>name = 'John'; <span class="next comment">// <mark class="red">Error</mark></span></code>
+            <code class="next">console.log(this); <span class="comment next">// undefined</span></code>
+        </pre>
+    </section>
+
+    <section class="slide">
+        <h2>ES Modules: scope</h2>
+        <p>
+            Modules has own scope, the same time having access to the global scope.
+            <br>
+            <span class="next">In other words, variables and functions from a module are not seen in other scripts or global scope.</span>
+        </p>
+        <pre class="fnsz20 javascript next">
+            <code><span class="comment">// index.js</span></code>
+            <code>const counter = 5;</code>
+        </pre>
+        <pre class="fnsz20 javascript next">
+            <code><span class="comment">// Global scope</span></code>
+            <code>console.log(counter); <span class="comment">// undefined</span></code>
+        </pre>
+    </section>
+
+    <section class="slide">
+        <h2>ESM: export and import</h2>
+        <p>To load/share modules there are directives <strong>export</strong> and <strong>import</strong>.</p>
+        <ul>
+            <li class="next"><code>export</code> - exports labeled variable to be accessible from outside the module scope</li>
+            <li class="next"><code>import</code> - imports exported code from other modules</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>ES Modules: named export</h2>
+        <div class="columns two">
+            <div>
+                <p class="note">Export</p>
+                <pre class="fnsz20 javascript" style="font-size: 16px;">
+                    <code><span class="comment">// module1.js</span></code>
+                    <code><mark>export</mark> function getBrowserLang() {</code>
+                    <code>  return window.navigator.language;</code>
+                    <code>}</code>
+                </pre>
+
+                <pre class="fnsz20 javascript next" style="font-size: 16px;">
+                    <code><span class="comment">// module1.js</span></code>
+                    <code>function getBrowserLang() {</code>
+                    <code>  return window.navigator.language;</code>
+                    <code>}</code>
+                    <code><mark>export</mark> { getBrowserLang };</code>
+                </pre>
+            </div>
+            <div class="next">
+                <p class="note">Import</p>
+                <pre class="fnsz20 javascript" style="font-size: 16px;">
+                    <code><span class="comment">// module2.js</span></code>
+                    <code><mark>import</mark> { getBrowserLang } from './module1.js';</code>
+                    <code>const lang = getBrowserLang();</code>
+                </pre>
+            </div>
+        </div>
+    </section>
+
+    <section class="slide">
+        <h2>ES Modules: multiple exports</h2>
+        <div class="columns two">
+            <div>
+                <p class="note">Export</p>
+                <pre class="fnsz20 javascript" style="font-size: 16px;">
+                    <code><span class="comment">// module1.js</span></code>
+                    <code>export const MAX_AMOUNT = 90;</code>
+                    <code>export const list = [];</code>
+                </pre>
+            </div>
+            <div class="next">
+                <p class="note">Import</p>
+                <pre class="fnsz20 javascript" style="font-size: 16px;">
+                    <code><span class="comment">// module2.js</span></code>
+                    <code>import { MAX_AMOUNT, list } from './module1.js';</code>
+                    <code>console.log(MAX_AMOUNT); <span class="comment">// 90</span></code>
+                    <code>console.log(list); <span class="comment">// []</span></code>
+                </pre>
+            </div>
+        </div>
+        <pre class="fnsz20 javascript"></pre>
+    </section>
+
+    <section class="slide">
+        <h2>ES Modules: import *</h2>
+        <p>If there are a lot of imports, we can import everything as an object</p>
+        <div class="columns two">
+            <div class="next">
+                <p class="note">Export</p>
+                <pre class="fnsz20 javascript" style="font-size: 16px;">
+                    <code><span class="comment">// module1.js</span></code>
+                    <code>export const MAX_AMOUNT = 90;</code>
+                    <code>export const list = [];</code>
+                </pre>
+            </div>
+            <div class="next">
+                <p class="note">Import</p>
+                <pre class="fnsz20 javascript" style="font-size: 16px;">
+                    <code><span class="comment">// module2.js</span></code>
+                    <code>import <mark>*</mark> as phones from './module1.js';</code>
+                    <code>console.log(phones.MAX_AMOUNT); <span class="comment">// 90</span></code>
+                    <code>console.log(phones.list); <span class="comment">// []</span></code>
+                </pre>
+            </div>
+        </div>
+        <pre class="fnsz20 javascript"></pre>
+    </section>
+
+    <section class="slide">
+        <h2>ES Modules: aliases</h2>
+        <p>We can use <strong>as</strong> to import and export under different names.</p>
+        <div class="columns two">
+            <div class="next">
+                <p class="note">Export</p>
+                <pre class="fnsz20 javascript" style="font-size: 16px;">
+                    <code><span class="comment">// module1.js</span></code>
+                    <code>export const MAX_AMOUNT = 90;</code>
+                    <code>export const list = [];</code>
+                    <code>export {</code>
+                    <code>  MAX_AMOUNT <mark>as</mark> limit,</code>
+                    <code>  list <mark>as</mark> data</code>
+                    <code>};</code>
+                </pre>
+            </div>
+            <div class="next">
+                <p class="note">Import</p>
+                <pre class="fnsz20 javascript" style="font-size: 16px;">
+                    <code><span class="comment">// module2.js</span></code>
+                    <code>import { limit <mark>as</mark> maxLimit, data } from './module1.js';</code>
+                    <code>console.log(maxLimit); <span class="comment">// 90</span></code>
+                    <code>console.log(data); <span class="comment">// []</span></code>
+                </pre>
+            </div>
+        </div>
+        <pre class="fnsz20 javascript"></pre>
+    </section>
+
+    <section class="slide">
+        <h2>ES Modules: default export</h2>
+        <p>One exportable entity per module</p>
+        <div class="columns two">
+            <div>
+                <p class="note">Export</p>
+                <pre class="fnsz20 javascript" style="font-size: 16px;">
+                    <code><span class="comment">// hotel.js</span></code>
+                    <code>export <mark>default</mark> class Hotel {</code>
+                    <code>  constructor(name, location) {</code>
+                    <code>    this.name = name;</code>
+                    <code>    this.location = location;</code>
+                    <code>  }</code>
+                    <code>}</code>
+                </pre>
+            </div>
+            <div class="next">
+                <p class="note">Import</p>
+                <pre class="fnsz20 javascript" style="font-size: 16px;">
+                    <code><span class="comment">// index.js</span></code>
+                    <code>import <mark>Hotel</mark> from './hotel.js';  <span class="comment">// Not { Hotel }</span></code>
+                    <code>const hiltonHotel = new Hotel('Hilton Hotel', 'Kyiv');</code>
+                </pre>
+            </div>
+        </div>
+        <p class="next place bottom" style="font-size: 20px;">There may be only one <strong>export default</strong> per file.</p>
+    </section>
+
+    <section class="slide">
+        <h2>ES Modules: default export</h2>
+        <div class="place" style="margin-top: 55px;">
+            <p>Actually, we can have both <strong>default</strong> and <strong>named</strong> exports in a single module.</p>
+            <p class="next">Recommended to have either named exports or the default one in a single module.</p>
+        </div>
+    </section>
+
+    <section class="slide">
+        <h2>ES Modules: default export</h2>
+        <p>For default export, the exported entity can go without name.</p>
+        <pre class="next fnsz20 javascript">
+            <code>export default function() {}</code>
+        </pre>
+        <pre class="next fnsz20 javascript">
+            <code>export default ['North', 'East', 'West', 'South'];</code>
+        </pre>
+        <pre class="next fnsz20 javascript">
+            <code>export default class {}</code>
+        </pre>
+        <p class="next">When you import without curly braces, it looks at <strong>default</strong> field of exported module object.</p>
+    </section>
+
+    <section class="slide">
+        <h2>ES Modules: the "default" name</h2>
+        <p>You can use the <strong>default</strong> keyword to reference the default export.</p>
+        <pre class="javascript next" style="font-size: 16px;">
+            <code>function getHotelUsers() {}</code>
+            <code><span class="comment">// same as "export default" before the function declaration</span></code>
+            <code>export { getHotelUsers as <mark>default</mark> };</code>
+        </pre>
+        <pre class="javascript next" style="font-size: 16px;">
+            <code>import { <mark>default</mark> as Hotel, getHotelUsers } from './hotel.js';</code>
+            <code>const hotel = new Hotel('Hilton Hotel', 'Kyiv');</code>
+        </pre>
+        <pre class="javascript next" style="font-size: 16px;">
+            <code>import * as hotelService from './hotel.js';</code>
+            <code>const Hotel = hotelService.<mark>default</mark>;</code>
+            <code>new Hotel('Hilton Hotel', 'Kyiv');</code>
+        </pre>
+    </section>
+
+    <section class="slide">
+        <h2>ES Modules: default export convention</h2>
+        <p>If you use default export, consider applying a developers convention that imported entities should correspond to file names.</p>
+        <pre class="next fnsz20 javascript">
+            <code>import Hotel from './hotel.js';</code>
+        </pre>
+
+        <pre class="next fnsz20 javascript">
+            <code>import HotelPage from './hotel-page';</code>
+        </pre>
+
+        <pre class="next fnsz20 javascript">
+            <code>import HotelService from './hotel-service';</code>
+        </pre>
+    </section>
+
+    <section class="slide">
+        <h2>ES Modules: re-export</h2>
+        <p>Syntax structure <code>export ... from ...</code> allows you to import entities and immediately export them.</p>
+        <pre class="next fnsz20 javascript">
+            <code><span class="comment">// index.js</span></code>
+            <code><mark>export</mark> { hotelService } <mark>from</mark> './hotel-service.js';</code>
+            <code class="next"><mark>export</mark> { default as Hotel } <mark>from</mark> './hotel.js';</code>
+        </pre>
+        <p class="next">Commonly used in libraries and third-party packages.</p>
+    </section>
+
+    <section class="slide">
+        <h2>ES Modules: evaluation</h2>
+        <div class="columns two">
+            <div>
+                <p style="font-size: 20px;">
+                    ESM behave like <strong>"singletons"</strong>.
+                </p>
+                <p class="next" style="font-size: 20px;">A module code loaded and executed only <strong>once</strong> - the first time when imported.</p>
+                <p class="next" style="font-size: 20px;">Exports are generated and then they are shared between importers.</p>
+            </div>
+            <div>
+                <pre class="fnsz20 javascript next" style="font-size: 16px;">
+                    <code><span class="comment">// country.js</span></code>
+                    <code>export const country = { code: 'au' };</code>
+                </pre>
+
+                <pre class="fnsz20 javascript next" style="font-size: 16px;">
+                    <code><span class="comment">// file1.js</span></code>
+                    <code>import { country } from './country.js';</code>
+                    <code>country.code = 'ua';</code>
+                </pre>
+
+                <pre class="fnsz20 javascript next" style="font-size: 16px;">
+                    <code><span class="comment">// file2.js</span></code>
+                    <code>import { country } from './country.js';</code>
+                    <code>console.log(country.code); <span class="comment">// ua</span></code>
+                </pre>
+            </div>
+        </div>
+    </section>
+
+    <section class="slide">
+        <h2>ES Modules: dependencies graph</h2>
+        <div class="columns two">
+            <div>
+                <img src="./pictures/esmodules.png" alt="ES Modules dependencies" class="" style="max-width: 100%; margin-top: 20px;">
+            </div>
+            <div>
+                <p style="font-size: 16px; margin-top: 100px;">Any code referencing a module understands it's a dependency. So if the module file is changed or moved, the problem is immediately obvious.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="slide">
+        <h2>ES Modules: loading process</h2>
+        <ul style="margin-top: 80px;">
+            <li><strong>Construction</strong> - find, download, and parse all files into module record.</li>
+            <li class="next"><strong>Instantiation</strong> - find boxes in memory to place all exported values in. Then make both exports and imports point to those boxes in memory. This is called linking.</li>
+            <li class="next"><strong>Evaluation</strong> - run the code to fill in the boxes with the variables actual values.</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>ES Modules: path</h2>
+        <ul>
+            <li>
+                <p style="font-size: 22px; margin-bottom: 0px;">Must include extension:</p>
+                <pre class="fnsz20 javascript">
+                    <code>import 'hotel<mark>.js</mark>';</code>
+                </pre>
+            </li>
+            <li class="next">
+                <p style="font-size: 22px; margin-bottom: 0px;">Path reference should be either relative or absolute:</p>
+                <pre class="fnsz20 javascript">
+                    <code>import './hotel.js';</code>
+                    <code>import '../store.js';</code>
+                    <code>import 'https://some-path.come/module.js';</code>
+                </pre>
+            </li>
+            <li class="next">
+                <p style="font-size: 22px; margin-bottom: 0px;">Can't be dynamic for static imports.</p>
+            </li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>ES Modules: "nomodule" attribute</h2>
+        <p>Old browsers without ESM support won't run module scripts. We can provide a <strong>fallback</strong> script with a nomodule attribute.</p>
+        <pre class="next">
+            <code class="markup language-markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>index.js<span class="token punctuation">"</span></span><span class="token attr-name"> type</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>module<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span><span class="token script"></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">&gt;</span></code>
+        </pre>
+        <pre class="next">
+            <code class="markup language-markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name"><mark>nomodule</mark></span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>index.js<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span><span class="token script"></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">&gt;</span></code>
+        </pre>
+        <p class="next">Only the browsers <strong>without</strong> ESM support will run the script with nomodule attribute.</p>
+    </section>
+
+    <section class="slide">
+        <h2>ES Modules: module bundlers</h2>
+        <p>For production apps, ESM most commonly are being used with module bundlers.</p>
+        <div class="next">
+            <p style="margin-bottom: 5px;"><strong>Reasons</strong>:</p>
+            <ul>
+                <li class="next">Automatization, more control</li>
+                <li class="next">Support old browsers</li>
+                <li class="next">Better performance</li>
+                <li class="next">Post processing: linting, transpiling, etc.</li>
+            </ul>
+        </div>
+    </section>
+
+    <section class="slide">
+        <h2>ES Modules: summary</h2>
+        <ul>
+            <li>Finally, standardized way to using JS modules in browsers (not only).</li>
+            <li class="next">A ES module is a file with own scope, contexts. Strict mode by default.</li>
+            <li class="next">Can be used in browser via module script. Nomodule script for fallback.</li>
+            <li class="next">import/export for sharing code between modules.</li>
+            <li class="next">Imported and executed only once.</li>
+            <li class="next">Supported in all major browsers.</li>
+        </ul>
+    </section>
+
+    <section class="slide" style="background: #181C20;">
+        <h2 class="shout brand-title"><span>Materials</span></h2>
+    </section>
+
+    <section class="slide">
+        <h2>Links: client-side storage</h2>
+        <ul>
+            <li>
+                <a target="_blank" href="https://javascript.info/data-storage">learn.javascript: Storing data in the browser</a>
+                /
+                <a target="_blank" href="https://learn.javascript.ru/data-storage">ru</a>
+            </li>
+            <li>
+                <a target="_blank" href="https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Client-side_storage">
+                    MDN: Client-side storage
+                </a>
+            </li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>Links: ES modules</h2>
+        <ul>
+            <li>
+                <a target="_blank" href="https://javascript.info/modules">learn.javascript: Modules</a>
+                /
+                <a target="_blank" href="https://learn.javascript.ru/modules">ru</a>
+            </li>
+            <li>
+                <a target="_blank" href="https://exploringjs.com/impatient-js/ch_modules.html">JS for impatient programmers: Modules</a>
+            </li>
+            <li>
+                <a target="_blank" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules">
+                    MDN: JavaScript modules
+                </a>
+            </li>
+            <li>
+                <a target="_blank" href="https://eloquentjavascript.net/10_modules.html">
+                    Eloquent JavaScript: Modules
+                </a>
+            </li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout">Thanks!</h2>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout">Questions?</h2>
+    </section>
 
     <div class="progress"></div>
 
