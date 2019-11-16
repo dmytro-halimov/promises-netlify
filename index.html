@@ -475,7 +475,7 @@
 
     <section class="slide">
         <h2>Promises: catch</h2>
-        <p><strong>.catch(handleError)</strong> is the same as <strong>.then(null, handleError)</strong></p>
+        <p><strong>.catch(handleError)</strong> alternative to <strong>.then(null, handleError)</strong></p>
         <pre class="fnsz20 javascript" style="font-size: 19px;">
             <code>let promise = new Promise((resolve, reject) => {</code>
             <code>  setTimeout(() => { reject(Error('Sorry dude')) }, 5000);</code>
@@ -728,6 +728,245 @@
             <code>const promise = Promise.<mark>reject</mark>(Error('Wrong!'));</code>
             <code>promise.catch(error => console.log); <span class="comment">// Error: Wrong!</span></code>
         </pre>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout" style="font-size: 100px;">Common mistakes</h2>
+    </section>
+
+    <section class="slide">
+        <h2>Common mistakes: pyramid of doom</h2>
+        <div class="columns two">
+            <div>
+                <div class="correctness">
+                    <img src="./pictures/incorrect.svg" alt="Incorrect.">
+                </div>
+                <pre class="fnsz20 javascript" style="font-size: 18px;">
+                    <code>func1().then(() => {</code>
+                    <code>  func2().then(() => {</code>
+                    <code>    func3().then(() => {...});</code>
+                    <code>  });</code>
+                    <code>});</code>
+                </pre>
+            </div>
+            <div class="next">
+                <div class="correctness">
+                    <img src="./pictures/correct.svg" alt="Correct.">
+                </div>
+                <pre class="fsnz20 javascript" style="font-size: 18px;">
+                    <code>func1()</code>
+                    <code>  .then(data => return func2(data))</code>
+                    <code>  .then(data => return func3(data));</code>
+                </pre>
+                <p>OR</p>
+                <pre class="fsnz20 javascript" style="font-size: 18px;">
+                    <code>func1()</code>
+                    <code>  .then(func2)</code>
+                    <code>  .then(func3);</code>
+                </pre>
+            </div>
+        </div>
+        <style>
+            .correctness {
+                display: flex;
+                justify-content: center;
+                margin-bottom: 10px;
+                height: 40px;
+            }
+
+            .correctness img {
+                width: 30px;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>Common mistakes: pyramid of doom</h2>
+        <p style="font-size: 20px;">Nested promises are commonly used in cases, where they're not important for your main flow and shouldn't affect your promise chaining.</p>
+        <p class="next" style="font-size: 20px;">In other words, you don't really care if that request will be successfull or not.</p>
+        <pre class="next fnsz20 javascript" style="font-size: 18px;">
+            <code>fetchUser('user-123')</code>
+            <code>  .then(user => {</code>
+            <code>     userAnalyticsService.send(user.id);</code>
+            <code>     return fetchUserProducts(user.id);</code>
+            <code>  })</code>
+            <code>  .catch(error => { console.error(error); });</code>
+        </pre>
+    </section>
+
+    <section class="slide">
+        <h2>Common mistakes: unhandled promise</h2>
+        <div class="columns two">
+            <div>
+                <div class="correctness">
+                    <img src="./pictures/incorrect.svg" alt="Incorrect.">
+                </div>
+                <pre class="fnsz20 javascript" style="font-size: 18px;">
+                    <code>Promise.resolve().then(() => {</code>
+                    <code>  <span class="comment">// Error in the line below</span></code>
+                    <code>  JSON.parse('oops!');</code>
+                    <code>});</code>
+                </pre>
+            </div>
+            <div class="next">
+                <div class="correctness">
+                    <img src="./pictures/correct.svg" alt="Correct.">
+                </div>
+                <pre class="fsnz20 javascript" style="font-size: 18px;">
+                    <code>Promise.resolve()</code>
+                    <code>  .then(() => { JSON.parse('oops!'); })</code>
+                    <code>  .catch(error => { console.error(error); });</code>
+                </pre>
+            </div>
+        </div>
+    </section>
+
+    <section class="slide">
+        <h2>Common mistakes: forget to return</h2>
+        <div class="columns two">
+            <div>
+                <div class="correctness">
+                    <img src="./pictures/incorrect.svg" alt="Incorrect.">
+                </div>
+                <pre class="fnsz20 javascript" style="font-size: 15px;">
+                    <code>const timeout = ms => {</code>
+                    <code>  return new Promise(ok => {</code>
+                    <code>      setTimeout(ok, ms);</code>
+                    <code>  });</code>
+                    <code>}</code>
+                    <br>
+                    <code>timeout(1000)</code>
+                    <code>  .then(() => { timeout(5000); })</code>
+                    <code>  .then(() => {</code>
+                    <code>    <span class="comment">// Executes before timeout: 5000 ms</span></code>
+                    <code>  });</code>
+                </pre>
+            </div>
+            <div class="next">
+                <div class="correctness">
+                    <img src="./pictures/correct.svg" alt="Correct.">
+                </div>
+                <pre class="fnsz20 javascript" style="font-size: 15px;">
+                    <code>timeout(1000)</code>
+                    <code>  .then(() => { <mark>return</mark> timeout(5000); })</code>
+                    <code>  .then(() => {</code>
+                    <code>    <span class="comment">// Executes after timeout: 5000ms</span></code>
+                    <code>  });</code>
+                </pre>
+            </div>
+        </div>
+    </section>
+
+    <section class="slide">
+        <h2>Common mistakes: broken promise chain</h2>
+        <div class="columns two">
+            <div>
+                <div class="correctness">
+                    <img src="./pictures/incorrect.svg" alt="Incorrect.">
+                </div>
+                <pre class="fnsz20 javascript" style="font-size: 14px;">
+                    <code>const loadUser = id => {</code>
+                    <code>  const promise = fetch(`/users/${id}`);</code>
+                    <code>  promise.then(res => {</code>
+                    <code>    return res.json();</code>
+                    <code>  });</code>
+                    <code>  return promise;</code>
+                    <code>}</code>
+                    <br>
+                    <code>loadUser('1').then(user => {</code>
+                    <code><span class="comment">// Error in line below</span></code>
+                    <code>  console.log(user.name);</code>
+                    <code>});</code>
+                </pre>
+            </div>
+            <div class="next">
+                <div class="correctness">
+                    <img src="./pictures/correct.svg" alt="Correct.">
+                </div>
+                <pre class="fnsz20 javascript" style="font-size: 14px;">
+                    <code>const loadUser = id => {</code>
+                    <code>  const promise = fetch(`/users/${id}`);</code>
+                    <code>  <mark>return</mark> promise.then(res => {</code>
+                    <code>    return res.json();</code>
+                    <code>  });</code>
+                    <code>}</code>
+                    <br>
+                    <br>
+                    <code>loadUser('1').then(user => {</code>
+                    <code>  console.log(user.name);</code>
+                    <code>});</code>
+                </pre>
+            </div>
+        </div>
+    </section>
+
+    <section class="slide">
+        <h2>Common mistakes: iterating over promises</h2>
+        <div class="columns two">
+            <div>
+                <div class="correctness">
+                    <img src="./pictures/incorrect.svg" alt="Incorrect.">
+                </div>
+                <pre class="fnsz20 javascript" style="font-size: 14px;">
+                    <code>const userIds = ['1', '2', '3'];</code>
+                    <br>
+                    <code>Promise.resolve().then(() => {</code>
+                    <code>  userIds.forEach(id => {</code>
+                    <code>      asyncFetchUser(id);</code>
+                    <code>  });</code>
+                    <code>})</code>
+                    <code>.then(() => {</code>
+                    <code>  <span class="comment">// Expecting that all users are loaded</span></code>
+                    <code>});</code>
+                </pre>
+            </div>
+            <div class="next">
+                <div class="correctness">
+                    <img src="./pictures/correct.svg" alt="Correct.">
+                </div>
+                <pre class="fnsz20 javascript" style="font-size: 14px;">
+                    <code>const userIds = ['1', '2', '3'];</code>
+                    <br>
+                    <code>Promise.resolve().then(() => {</code>
+                    <code>  const promises = userIds.map(id => {</code>
+                    <code>      return asyncFetchUser(id);</code>
+                    <code>  });</code>
+                    <code>  return <mark>Promise.all</mark>(promises);</code>
+                    <code>})</code>
+                    <code>.then(users => {</code>
+                    <code>  <span class="comment">// All users are loaded</span></code>
+                    <code>});</code>
+                </pre>
+            </div>
+        </div>
+    </section>
+
+    <section class="slide">
+        <h2>Common mistakes: positive error handling</h2>
+        <div class="columns two">
+            <div>
+                <div class="correctness">
+                    <img src="./pictures/incorrect.svg" alt="Incorrect.">
+                </div>
+                <pre class="fnsz20 javascript" style="font-size: 16px;">
+                    <code>fetchUserFromCache(id)</code>
+                    <code>  .then(</code>
+                    <code>    user => showUser(user),</code>
+                    <code>    () => fetchUser(id).then(showUser)</code>
+                    <code>  );</code>
+                </pre>
+            </div>
+            <div class="next">
+                <div class="correctness">
+                    <img src="./pictures/correct.svg" alt="Correct.">
+                </div>
+                <pre class="fnsz20 javascript" style="font-size: 16px;">
+                    <code>fetchUserFromCache(id)</code>
+                    <code>  .catch(() => fetchUser(id))</code>
+                    <code>  .then(user => showUser(user));</code>
+                </pre>
+            </div>
+        </div>
     </section>
 
     <section class="slide">
@@ -1614,6 +1853,32 @@
             <li>
                 <a target="_blank" href="https://eloquentjavascript.net/10_modules.html">
                     Eloquent JavaScript: Modules
+                </a>
+            </li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>Links: Promises</h2>
+        <ul>
+            <li>
+                <a target="_blank" href="https://javascript.info/https://javascript.info/async">learn.javascript: Async</a>
+                /
+                <a target="_blank" href="https://learn.javascript.ru/async">ru</a>
+            </li>
+            <li>
+                <a target="_blank" href="https://eloquentjavascript.net/11_async.html">
+                    Eloquent JavaScript: Async programming
+                </a>
+            </li>
+            <li>
+                <a target="_blank" href="https://developers.google.com/web/ilt/pwa/working-with-promises">
+                    Google developers: Working with promises
+                </a>
+            </li>
+            <li>
+                <a target="_blank" href="https://github.com/getify/You-Dont-Know-JS/blob/2nd-ed/sync-async/ch3.md">
+                    You Dont Know JS: Promises
                 </a>
             </li>
         </ul>
